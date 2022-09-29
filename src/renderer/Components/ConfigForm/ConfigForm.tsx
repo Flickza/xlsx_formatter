@@ -1,12 +1,10 @@
 import {
-  Box,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
-  TextField,
 } from '@mui/material';
 import React from 'react';
 
@@ -27,13 +25,12 @@ const ConfigForm = () => {
         />
       </Grid> */}
       <Grid item xs={12}>
-        <FormControl sx={{ minWidth: '100%' }}>
-          <InputLabel>Standard Årstall</InputLabel>
+        <FormControl sx={{ minWidth: '20%' }}>
+          <InputLabel>Årstall</InputLabel>
           <Select
             value={year}
-            variant="filled"
-            color="primary"
-            label="Standard Årstall"
+            variant="outlined"
+            sx={{ borderColor: '#000000' }}
             onChange={handleChange}
           >
             <MenuItem value={18}>18</MenuItem>
