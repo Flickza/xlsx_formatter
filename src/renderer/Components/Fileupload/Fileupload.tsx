@@ -14,11 +14,15 @@ const Fileupload = () => {
     const workbook = XLSX.read(data);
 
     const json = Array.from(XLSX.utils.sheet_to_json(workbook.Sheets.Ark1));
-    console.log(json);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     json.forEach((row: any) => {
-      console.log(row?.ddmmyy);
+      if (row?.ddmmyy) {
+        console.log(row?.ddmmyy);
+      }
+      if (row['Fødselsdato (ddmmyyyy)']) {
+        console.log(row['Fødselsdato (ddmmyyyy)']);
+      }
     });
   };
   return (
