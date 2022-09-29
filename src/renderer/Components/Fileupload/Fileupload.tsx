@@ -23,21 +23,17 @@ const Fileupload = () => {
       );
     });
 
-    // eslint-disable-next-line promise/catch-or-return
-    Promise.all(sheets).then((s) => {
-      return console.log(s);
+    // eslint-disable-next-line promise/catch-or-return, @typescript-eslint/no-explicit-any
+    const json = Promise.all(sheets).then((s: Array<any>) => {
+      return Array.from(s).map((el) => {
+        return XLSX.utils.sheet_to_json(el?.Sheets?.Ark1);
+      });
     });
-    // const json = Array.from(XLSX.utils.sheet_to_json(workbook.Sheets.Ark1));
-
+    console.log(await json);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // json.forEach((row: any) => {
-    //   if (row?.ddmmyy) {
-    //     console.log(row?.ddmmyy);
-    //   }
-    //   if (row['Fødselsdato (ddmmyyyy)']) {
-    //     console.log(row['Fødselsdato (ddmmyyyy)']);
-    //   }
-    // });
+    (await json).forEach((row: any) => {
+      console.log(row);
+    });
   };
   return (
     <Button
