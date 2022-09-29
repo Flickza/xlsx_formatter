@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import React from 'react';
 import XLSX from 'xlsx';
+import sheetInspector from './sheet';
 
 // const formatOptions = ['Fødselsdato (ddmmyyyy)', 'ddmmyy'];
 
@@ -29,12 +30,11 @@ const Fileupload = () => {
         return XLSX.utils.sheet_to_json(el?.Sheets?.Ark1);
       });
     });
-    console.log(await json);
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (await json).forEach((row: any) => {
-      console.log(row);
-    });
+    (await json).forEach((x: Array<any>) => sheetInspector(x));
   };
+
   return (
     <Button
       sx={{ width: '100%', height: '50px' }}
