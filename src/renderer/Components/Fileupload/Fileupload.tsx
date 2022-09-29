@@ -37,7 +37,7 @@ const Fileupload = () => {
 
   return (
     <Button
-      sx={{ width: '100%', height: '50px' }}
+      sx={{ width: '100%', height: '50px', marginTop: 5 }}
       variant="contained"
       component="label"
       startIcon={<UploadFileIcon />}
