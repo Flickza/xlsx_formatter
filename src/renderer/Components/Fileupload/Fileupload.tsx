@@ -3,10 +3,6 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import React from 'react';
 import XLSX from 'xlsx';
 
-interface XlsxObject {
-  [key: string]: string | number;
-}
-
 // const formatOptions = ['Fødselsdato (ddmmyyyy)', 'ddmmyy'];
 
 const Fileupload = () => {
@@ -18,8 +14,10 @@ const Fileupload = () => {
     const workbook = XLSX.read(data);
 
     const json = Array.from(XLSX.utils.sheet_to_json(workbook.Sheets.Ark1));
+    console.log(json);
 
-    json.forEach((row: Pick<XlsxObject, 'ddmmyy'>) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    json.forEach((row: any) => {
       console.log(row?.ddmmyy);
     });
   };
