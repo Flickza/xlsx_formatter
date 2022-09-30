@@ -16,17 +16,18 @@ export default function App() {
           <Grid
             container
             mt={5}
+            className="color-800"
             sx={{
+              m: 25,
+              p: 5,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
             }}
           >
             <Grid item xs={12}>
-              <Box sx={{ p: 5, m: 20 }} className="color-500">
-                <ConfigForm />
-                <Fileupload />
-              </Box>
+              <ConfigForm />
+              <Fileupload />
             </Grid>
           </Grid>
         </Container>
