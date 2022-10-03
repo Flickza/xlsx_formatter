@@ -32,7 +32,9 @@ const Fileupload = () => {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (await json).forEach((x: Array<any>) => sheetInspector(x));
+    // (await json).forEach((x: Array<any>) => console.log(x, sheetInspector(x)));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (await json).forEach((x: Array<any>) => console.log(sheetInspector(x)));
   };
 
   return (

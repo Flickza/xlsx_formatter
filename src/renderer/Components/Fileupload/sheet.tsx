@@ -1,28 +1,104 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // example date: 14052001
+import XLSX from 'xlsx';
 
-const dateValidator = (date: any) => {
-  if (date.length !== 8) {
-    return false;
+const DateIsValid = (date: any) => {
+  return /^(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[012])(18|19|20)\d\d$/.test(date);
+};
+const GetDateProperty = (a: Array<any>) => {
+  let property;
+  if (Object.prototype.hasOwnProperty.call(a, 'ddmmyy')) {
+    property = 'ddmmyy';
   }
-  const day = date.substring(0, 2);
-  const month = date.substring(2, 4);
-  const year = date.substring(4, 8);
-  if (day < 1 || day > 31) {
-    return false;
+  if (Object.prototype.hasOwnProperty.call(a, 'Fødselsdato (ddmmyyyy)')) {
+    property = 'Fødselsdato (ddmmyyyy)';
   }
-  if (month < 1 || month > 12) {
-    return false;
+  return property;
+};
+const GetPersonNrProperty = (a: Array<any>) => {
+  let key;
+  Object.keys(a).forEach((x) => {
+    if (/^(person)|(Person)/g.test(x)) {
+      key = x;
+    }
+  });
+  return key;
+};
+const GetYear = (fdato?: string, pnr?: string, def?: string) => {
+  if (pnr === undefined) {
+    return def;
   }
-  if (year < 0 || year > new Date().getFullYear()) {
-    return false;
+  let year;
+  // 1900 - 1999
+  if (/^([0-4]\d\d)/g.test(pnr.toString().substring(0, 3))) {
+    year = 19;
   }
-  return true;
+  // 2000 - 2099
+  if (/^([5-9]\d\d)/g.test(pnr.toString().substring(0, 3))) {
+    year = 20;
+  }
+  return year;
 };
 const sheetInspector = (sheet: Array<any>) => {
-  sheet.forEach((row) => {
-    console.log(row?.ddmmyy);
+  const temp: Array<any> = sheet;
+  temp.forEach((row: any, index: any) => {
+    const pnrKey: string = GetPersonNrProperty(row)!;
+    const dateKey: string = GetDateProperty(row)!;
+    const year = GetYear(row[dateKey], row[pnrKey], '19');
+    temp[index][dateKey] = row[dateKey].toString().replaceAll(/\W/g, '');
+    if (!DateIsValid(temp[index][dateKey])) {
+      // date missing trailing 0
+      if (
+        temp[index][dateKey].length === 7 &&
+        /^([1-9]|[12][0-9]|3[01])(0[1-9]|1[012])(18|19|20)\d\d$/g.test(
+          temp[index][dateKey]
+        )
+      ) {
+        if (DateIsValid(`0${temp[index][dateKey]}`)) {
+          temp[index][dateKey] = `0${temp[index][dateKey]}`;
+        } else {
+          throw new Error(`Something is not right... @ line: ${index}`);
+        }
+      }
+      // date missing trailing 0 and year
+      if (
+        temp[index][dateKey].length === 5 &&
+        /^(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[012])([1-9][0-9])/g.test(
+          temp[index][dateKey]
+        )
+      ) {
+        if (DateIsValid(`0${temp[index][dateKey]}${year}`)) {
+          temp[index][dateKey] = `0${temp[index][dateKey]}${year}`;
+        } else {
+          throw new Error(`Something is not right... @ line: ${index}`);
+        }
+      }
+      // date missing year
+      if (
+        temp[index][dateKey].length === 6 &&
+        /^(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[012])\d\d$/g.test(
+          temp[index][dateKey]
+        )
+      ) {
+        if (
+          DateIsValid(
+            `${temp[index][dateKey].substring(0, 4)}${year}${temp[index][
+              dateKey
+            ].substring(4, 6)}`
+          )
+        ) {
+          temp[index][dateKey] = `${temp[index][dateKey].substring(
+            0,
+            4
+          )}${year}${temp[index][dateKey].substring(4, 6)}`;
+        } else {
+          throw new Error(`Something is not right... @ line: ${index}`);
+        }
+      }
+    }
   });
+  return temp;
 };
 
 export default sheetInspector;
