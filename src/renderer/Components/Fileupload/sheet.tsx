@@ -8,7 +8,7 @@ import checkMissing from 'renderer/Functions/checkMissing';
 
 import XLSX from 'xlsx';
 
-const sheetInspector = (sheet: XLSX.WorkSheet) => {
+const sheetInspector = (sheet: XLSX.WorkSheet, _defVal?: string) => {
   const temp: Array<any> = XLSX.utils.sheet_to_json(sheet?.Sheets?.Ark1, {
     defval: '',
   });
@@ -23,7 +23,7 @@ const sheetInspector = (sheet: XLSX.WorkSheet) => {
     const dateKey: string = GetProperty.Date?.(row)!;
 
     // calculate birthyear from fødselsdato + personnr
-    const year = GetYear(row[dateKey], row[pnrKey], '19');
+    const year = GetYear(row[dateKey], row[pnrKey], _defVal);
 
     if (pnrKey === undefined || dateKey === undefined) {
       throw new Error(`Some headers were not found...`);
