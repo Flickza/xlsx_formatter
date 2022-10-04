@@ -1,12 +1,10 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "4.6.0",
-  "description": "A foundation for scalable desktop apps",
+  "name": "xlsx_formatter",
+  "version": "0.0.1",
+  "description": "XLSX FORMATTER FOR AIN",
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://github.com/electron-react-boilerplate"
+    "name": "Adel Johan Holm Gundersen"
   },
   "main": "./dist/main/main.js",
   "scripts": {

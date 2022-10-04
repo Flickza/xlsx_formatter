@@ -1,5 +1,3 @@
-import * as XLSX from '../node_modules/xlsx/types/index';
-
 type Styles = Record<string, string>;
 declare module '*.svg' {
   export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
