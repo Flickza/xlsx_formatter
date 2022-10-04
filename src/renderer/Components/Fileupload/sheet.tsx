@@ -26,7 +26,7 @@ const sheetInspector = (sheet: XLSX.WorkSheet) => {
     const year = GetYear(row[dateKey], row[pnrKey], '19');
 
     if (pnrKey === undefined || dateKey === undefined) {
-      return;
+      throw new Error(`Some headers were not found...`);
     }
     // Strip all invalid characters
     temp[index][dateKey] = row[dateKey].toString().replaceAll(/\W|-|_/g, '');
