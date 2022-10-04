@@ -4,6 +4,8 @@ const GetYear = (fdato?: string, pnr?: string, def?: string) => {
   }
   // get 2 last characters of fdato
   const lastTwo = fdato.slice(-2);
+
+  // get current year
   const currentYear: string = new Date().getFullYear().toString();
 
   let year;
