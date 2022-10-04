@@ -29,7 +29,7 @@ const sheetInspector = (sheet: XLSX.WorkSheet) => {
       return;
     }
     // Strip all invalid characters
-    temp[index][dateKey] = row[dateKey].toString().replaceAll(/\W/g, '');
+    temp[index][dateKey] = row[dateKey].toString().replaceAll(/\W|-|_/g, '');
 
     if (!DateIsValid(temp[index][dateKey])) {
       // date missing trailing 0
