@@ -7,17 +7,21 @@ import {
 } from '@mui/material';
 import React from 'react';
 
-const ConfigForm = () => {
-  const [year, setYear] = React.useState('19');
-
+const ConfigForm = ({
+  changeYear,
+  selectedYear,
+}: {
+  changeYear: React.Dispatch<React.SetStateAction<string>>;
+  selectedYear: string;
+}) => {
   const handleChange = (event: SelectChangeEvent) => {
-    setYear(event.target.value as string);
+    changeYear(event.target.value as string);
   };
   return (
     <FormControl sx={{ minWidth: '20%' }}>
       <InputLabel>Årstall</InputLabel>
       <Select
-        value={year}
+        value={selectedYear}
         variant="outlined"
         sx={{ borderColor: '#000000' }}
         onChange={handleChange}

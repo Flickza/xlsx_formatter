@@ -11,7 +11,7 @@ interface Sheet {
   parsed?: XLSX.WorkSheet;
 }
 
-const Fileupload = () => {
+const Fileupload = ({ selectedYear }: { selectedYear: string }) => {
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null) return;
     const upload: Array<unknown> = [];
@@ -39,7 +39,7 @@ const Fileupload = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (await SheetHandler).forEach(async (x: Sheet) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const inspect = sheetInspector(x.parsed!, '19');
+      const inspect = sheetInspector(x.parsed!, selectedYear);
       const workbook: XLSX.WorkBook = template;
       XLSX.utils.sheet_add_json(template?.Sheets?.Ark1, inspect, {
         skipHeader: false,

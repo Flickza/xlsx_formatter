@@ -1,10 +1,13 @@
 import { Container, Grid, ThemeProvider } from '@mui/material';
-import theme from './theme';
+import { useState } from 'react';
 import Fileupload from './Components/Fileupload/Fileupload';
 import './App.css';
 import ConfigForm from './Components/ConfigForm/ConfigForm';
+import theme from './theme';
 
 export default function App() {
+  const [year, setYear] = useState('19');
+
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -26,8 +29,8 @@ export default function App() {
             }}
           >
             <Grid item xs={12}>
-              <ConfigForm />
-              <Fileupload />
+              <ConfigForm changeYear={setYear} selectedYear={year} />
+              <Fileupload selectedYear={year} />
             </Grid>
           </Grid>
         </Container>
