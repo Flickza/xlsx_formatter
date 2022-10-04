@@ -28,23 +28,22 @@ const sheetInspector = (sheet: XLSX.WorkSheet) => {
 
     if (!DateIsValid(temp[index][dateKey])) {
       // date missing trailing 0
-      if (temp[index][dateKey].length === 7 &&checkMissing.trailing?.(temp[index][dateKey])) {
+      if (temp[index][dateKey].length === 7 && checkMissing.trailing?.(temp[index][dateKey])) {
         const modified = `0${temp[index][dateKey]}`;
+        // check if date is valid after modification
         if (DateIsValid(modified)) {
           temp[index][dateKey] = modified;
         } else {
-          throw new Error(
-            `Something is not right... @ line: ${index} \n Reading: ${modified}`
-          );
+          throw new Error(`Something is not right... @ line: ${index} \n Reading: ${modified}`);
         }
       }
       // date missing trailing 0 and year
-      if (
-        temp[index][dateKey].length === 5 &&
-        checkMissing.yearAndTrailing?.(temp[index][dateKey])
-      ) {
+      if (temp[index][dateKey].length === 5 && checkMissing.yearAndTrailing?.(temp[index][dateKey])) {
         const modified = `0${temp[index][dateKey]}${year}`;
+
+        // check if date is valid after modification
         if (DateIsValid(modified)) {
+          // set new value to modified value
           temp[index][dateKey] = modified;
         } else {
           throw new Error(`Something is not right... @ line: ${index} \n Reading: ${modified}`);
@@ -56,7 +55,7 @@ const sheetInspector = (sheet: XLSX.WorkSheet) => {
         const modified = temp[index][dateKey].substring(0, 4) + year +temp[index][dateKey].substring(4, 6);
         // check if date is after year has been added
         if (DateIsValid(modified)) {
-          // set new date
+          // set new value to modified value
           temp[index][dateKey] = modified;
         } else {
           throw new Error(`Something is not right... @ line: ${index} \n Reading: ${modified}`);
