@@ -1,4 +1,4 @@
-import { Container, Box, Grid, Paper, ThemeProvider } from '@mui/material';
+import { Container, Grid, ThemeProvider } from '@mui/material';
 import theme from './theme';
 import Fileupload from './Components/Fileupload/Fileupload';
 import './App.css';

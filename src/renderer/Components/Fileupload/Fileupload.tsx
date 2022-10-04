@@ -4,37 +4,49 @@ import React from 'react';
 import XLSX from 'xlsx';
 import sheetInspector from './sheet';
 
-// const formatOptions = ['Fødselsdato (ddmmyyyy)', 'ddmmyy'];
+const template: XLSX.WorkBook = require('./template.json');
+
+interface Sheet {
+  name?: string;
+  parsed?: XLSX.WorkSheet;
+}
 
 const Fileupload = () => {
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null) return;
     const upload: Array<unknown> = [];
-
     Array.from(e?.target?.files).forEach((f) => {
       if (f === undefined && upload === undefined) return;
       upload.push(f);
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sheets = upload.map(async (u: File | any) => {
+      const fileName = u.name.replaceAll('.', '').replaceAll('xlsx', '');
       return Promise.resolve(
         await u?.arrayBuffer().then((b: Array<unknown>) => {
-          return XLSX.read(b);
+          return { name: fileName, parsed: XLSX.read(b) };
         })
       );
     });
 
     // eslint-disable-next-line promise/catch-or-return, @typescript-eslint/no-explicit-any
-    const json = Promise.all(sheets).then((s: Array<any>) => {
+    const SheetHandler = Promise.all(sheets).then((s: Array<any>) => {
       return Array.from(s).map((el) => {
-        return XLSX.utils.sheet_to_json(el?.Sheets?.Ark1);
+        return el;
       });
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // (await json).forEach((x: Array<any>) => console.log(x, sheetInspector(x)));
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (await json).forEach((x: Array<any>) => console.log(sheetInspector(x)));
+    (await SheetHandler).forEach(async (x: Sheet) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const inspect = sheetInspector(x.parsed!);
+      const workbook: XLSX.WorkBook = template;
+      XLSX.utils.sheet_add_json(template?.Sheets?.Ark1, inspect, {
+        skipHeader: true,
+        origin: 'A2',
+      });
+      XLSX.writeFile(workbook, `${x.name}_modified.xlsx`);
+    });
   };
 
   return (
