@@ -102,6 +102,8 @@ const createWindow = async () => {
   if (isDebug) {
     const menuBuilder = new MenuBuilder(mainWindow);
     menuBuilder.buildMenu();
+  } else {
+    mainWindow.setMenu(null);
   }
 
   // Open urls in the user's browser
