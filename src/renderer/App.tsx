@@ -9,16 +9,20 @@ export default function App() {
   const [year, setYear] = useState('19');
   const classes = AppStyles();
   return (
-    <>
-      <Grid container className={classes.mainGrid}>
-        <Grid xs={12} className={classes.secondGrid}>
+    <Grid container className={classes.mainGrid}>
+      <Grid className={classes.secondGrid}>
+        <Grid item>
           <Alert sx={{ mb: 3 }} severity="info">
             NB! - Regneark må følge den nye malen.
           </Alert>
+        </Grid>
+        <Grid item className={classes.inputs}>
           <ConfigYear changeYear={setYear} selectedYear={year} />
+        </Grid>
+        <Grid item>
           <Fileupload selectedYear={year} />
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 }

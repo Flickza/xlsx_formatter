@@ -1,11 +1,11 @@
 import {
   FormControl,
-  FormLabel,
   MenuItem,
   MenuProps,
   Select,
   SelectChangeEvent,
   Tooltip,
+  Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react';
@@ -35,19 +35,18 @@ const ConfigYear = ({
   return (
     <FormControl>
       <Tooltip title={instructions} placement="top" arrow>
-        <FormLabel sx={{ color: 'white' }}>Standard Årstall - ?</FormLabel>
+        <Typography sx={{ color: 'white' }}>Standard Årstall - ?</Typography>
       </Tooltip>
       <Select
-        disableUnderline
         className={minimalSelectClasses.select}
         MenuProps={menuProps}
         IconComponent={ExpandMoreIcon}
         value={selectedYear}
         onChange={handleChange}
       >
-        <MenuItem value="18">18</MenuItem>
-        <MenuItem value="19">19</MenuItem>
-        <MenuItem value="20">20</MenuItem>
+        <MenuItem value="18">18xx</MenuItem>
+        <MenuItem value="19">19xx</MenuItem>
+        <MenuItem value="20">20xx</MenuItem>
       </Select>
     </FormControl>
   );

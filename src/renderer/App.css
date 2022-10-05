@@ -1,65 +1,7 @@
 body {
-  background-color: #1f2933;
+  margin: 0;
+  height: 100%;
 }
-
-.color-900 {
-  background-color: #1f2933;
-}
-.color-800 {
-  background-color: #323f4b;
-}
-.color-700 {
-  background-color: #3e4c59;
-}
-.color-600 {
-  background-color: #52606d;
-}
-.color-500 {
-  background-color: #616e7c;
-}
-.color-400 {
-  background-color: #7b8794;
-}
-.color-300 {
-  background-color: #9aa5b1;
-}
-.color-200 {
-  background-color: #cbd2d9;
-}
-.color-100 {
-  background-color: #e4e7eb;
-}
-.color-50 {
-  background-color: #f5f7fa;
-}
-
-.text-900 {
-  color: #1f2933;
-}
-.text-800 {
-  color: #323f4b;
-}
-.text-700 {
-  color: #3e4c59;
-}
-.text-600 {
-  color: #52606d;
-}
-.text-500 {
-  color: #616e7c;
-}
-.text-400 {
-  color: #7b8794;
-}
-.text-300 {
-  color: #9aa5b1;
-}
-.text-200 {
-  color: #cbd2d9;
-}
-.text-100 {
-  color: #e4e7eb;
-}
-.text-50 {
-  color: #f5f7fa;
+div#root {
+  height: 100%;
 }

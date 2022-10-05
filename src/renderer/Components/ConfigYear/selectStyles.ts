@@ -1,13 +1,13 @@
 import { blue } from '@mui/material/colors';
 import { createStyles, makeStyles } from '@mui/styles';
 
-const selectStyles = makeStyles((theme?: any) =>
+const selectStyles = makeStyles(() =>
   createStyles({
     select: {
-      minWidth: 150,
+      minWidth: 300,
       background: 'white',
       color: blue[500],
-      fontWeight: 200,
+      fontWeight: 400,
       borderStyle: 'none',
       boxShadow: '0px 5px 8px -3px rgba(0,0,0,0.14)',
       '&:focus': {
@@ -32,7 +32,7 @@ const selectStyles = makeStyles((theme?: any) =>
       paddingBottom: 0,
       background: 'white',
       '& li': {
-        fontWeight: 200,
+        fontWeight: 400,
       },
       '& li:hover': {
         background: blue[100],
