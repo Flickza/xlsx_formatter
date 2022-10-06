@@ -33,7 +33,12 @@ const ConfigYear = ({
   };
   const instructions = `Velg ett standard årstall, dette vil brukes om person nummer ikke er utfyllt.`;
   return (
-    <FormControl>
+    <FormControl
+      sx={{
+        width: '30%',
+        alignItems: 'center',
+      }}
+    >
       <Tooltip title={instructions} placement="top" arrow>
         <Typography sx={{ color: 'white' }}>Standard Årstall - ?</Typography>
       </Tooltip>

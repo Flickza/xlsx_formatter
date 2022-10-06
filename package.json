@@ -110,11 +110,14 @@
     "@mui/styles": "^5.10.8",
     "dotenv": "^16.0.3",
     "electron-debug": "^3.2.0",
+    "electron-dl": "^3.3.1",
     "electron-log": "^4.4.8",
     "electron-updater": "^5.2.3",
+    "fs": "^0.0.1-security",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
+    "react-toastify": "^9.0.8",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.12/xlsx-0.18.12.tgz"
   },
   "devDependencies": {

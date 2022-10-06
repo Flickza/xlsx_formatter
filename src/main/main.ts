@@ -9,7 +9,8 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import XLSX from 'xlsx';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -82,6 +83,36 @@ const createWindow = async () => {
     },
     resizable: false,
   });
+
+  ipcMain.handle('dialog:open', async () => {
+    const result = await dialog.showOpenDialog({
+      properties: ['openDirectory'],
+    });
+    if (result.canceled) {
+      return false;
+    }
+    // eslint-disable-next-line consistent-return
+    return result.filePaths[0];
+  });
+
+  ipcMain.handle(
+    'save',
+    async (_event, _wb: XLSX.WorkBook, _filename, _dir) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      return new Promise((resolve, _reject) => {
+        XLSX.writeFileAsync(
+          path.join(_dir, _filename),
+          _wb,
+          {
+            type: 'file',
+          },
+          () => {
+            resolve({ message: `File saved: ${_filename} in ${_dir}` });
+          }
+        );
+      });
+    }
+  );
 
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 

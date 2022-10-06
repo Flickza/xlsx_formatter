@@ -4,7 +4,7 @@ import { createStyles, makeStyles } from '@mui/styles';
 const selectStyles = makeStyles(() =>
   createStyles({
     select: {
-      minWidth: 300,
+      minWidth: '100%',
       background: 'white',
       color: blue[500],
       fontWeight: 400,

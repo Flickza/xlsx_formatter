@@ -19,3 +19,17 @@ contextBridge.exposeInMainWorld('electron', {
     },
   },
 });
+
+contextBridge.exposeInMainWorld('dialog', {
+  getDir: async () => {
+    const result = await ipcRenderer.invoke('dialog:open');
+    return result;
+  },
+});
+
+contextBridge.exposeInMainWorld('save', {
+  save: async (_wb: unknown, _filename: string, _dir: string) => {
+    const result = await ipcRenderer.invoke('save', _wb, _filename, _dir);
+    return result;
+  },
+});

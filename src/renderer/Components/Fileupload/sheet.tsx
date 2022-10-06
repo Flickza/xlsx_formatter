@@ -13,7 +13,6 @@ const sheetInspector = (sheet: XLSX.WorkSheet, _defVal?: string) => {
     defval: '',
   });
   temp.forEach((row: { [index: string]: string }, index: any) => {
-
     // get personNr key from object
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     const pnrKey: string = GetProperty.PersonNr?.(row)!;
@@ -23,10 +22,16 @@ const sheetInspector = (sheet: XLSX.WorkSheet, _defVal?: string) => {
     const dateKey: string = GetProperty.Date?.(row)!;
 
     // calculate birthyear from fødselsdato + personnr
-    const year = GetYear(row[dateKey], row[pnrKey], _defVal);
+    const year = GetYear(
+      row[dateKey].toString(),
+      row[pnrKey].toString(),
+      _defVal
+    );
 
-    if (pnrKey === undefined || dateKey === undefined) {
-      throw new Error(`Some headers were not found...`);
+    if (pnrKey === undefined || dateKey === undefined || !year) {
+      throw new Error(
+        `Some headers were not found... \n PNR_HEADER_FOUND: ${pnrKey}\n DATE_HEADER_FOUND: ${dateKey}\n YEAR_HEADER_FOUND: ${year} [BASED_ON]: ${row[dateKey]}, ${row[pnrKey]}`
+      );
     }
     // Strip all invalid characters
     temp[index][dateKey] = row[dateKey].toString().replaceAll(/\W|-|_/g, '');

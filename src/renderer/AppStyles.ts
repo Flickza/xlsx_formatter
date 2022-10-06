@@ -22,8 +22,14 @@ const AppStyles = makeStyles(() =>
       padding: 50,
     },
     inputs: {
+      width: '100%',
       display: 'flex',
       justifyContent: 'center',
+      alignItems: 'center',
+    },
+    title: {
+      width: '100%',
+      overflow: 'clip',
     },
   })
 );

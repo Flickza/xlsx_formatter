@@ -12,6 +12,12 @@ declare global {
         once(channel: string, func: (...args: unknown[]) => void): void;
       };
     };
+    dialog: {
+      getDir: () => Promise<string>;
+    };
+    save: {
+      save: (_wb: unknown, _filename: string, _dir: string) => Promise<any>;
+    };
   }
 }
 

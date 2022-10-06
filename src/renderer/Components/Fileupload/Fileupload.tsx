@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import { toast } from 'react-toastify';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import React from 'react';
 import XLSX from 'xlsx';
@@ -11,14 +12,27 @@ interface Sheet {
   parsed?: XLSX.WorkSheet;
 }
 
-const Fileupload = ({ selectedYear }: { selectedYear: string }) => {
+const Fileupload = ({
+  selectedYear,
+  currentDirectory,
+}: {
+  selectedYear: string;
+  currentDirectory: string;
+}) => {
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files === null) return;
+    if (e.target.files === null || currentDirectory === '') return;
+    // capture uploaded files
+    const fileObj = e.target.files;
+
+    // create array of files
     const upload: Array<unknown> = [];
-    Array.from(e?.target?.files).forEach((f) => {
+
+    // handle array of files
+    Array.from(fileObj).forEach((f) => {
       if (f === undefined && upload === undefined) return;
       upload.push(f);
     });
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sheets = upload.map(async (u: File | any) => {
       const fileName = u.name.replaceAll('.', '').replaceAll('xlsx', '');
@@ -45,8 +59,21 @@ const Fileupload = ({ selectedYear }: { selectedYear: string }) => {
         skipHeader: false,
         origin: 'A1',
       });
-      XLSX.writeFile(workbook, `${x.name}_modified.xlsx`);
+      await toast.promise(
+        window.save.save(workbook, `${x.name}_modified.xlsx`, currentDirectory),
+        {
+          pending: `Lagrer ${x.name}_modified.xlsx...`,
+          success: {
+            render({ data }) {
+              return `${data.message}`;
+            },
+          },
+          error: 'Feil oppsto! Kontakt @ Adel Johan',
+        }
+      );
     });
+    // reset file input
+    e.target.value = '';
   };
 
   return (
@@ -54,6 +81,7 @@ const Fileupload = ({ selectedYear }: { selectedYear: string }) => {
       sx={{ width: '100%', height: '50px', marginTop: 5 }}
       variant="contained"
       component="label"
+      disabled={currentDirectory === ''}
       startIcon={<UploadFileIcon />}
     >
       Last opp regneark
