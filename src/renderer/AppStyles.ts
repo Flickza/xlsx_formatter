@@ -5,7 +5,7 @@ const AppStyles = makeStyles(() =>
   createStyles({
     mainGrid: {
       height: '100%',
-      paddingTop: '12.5%',
+      paddingTop: '10%',
       paddingBottom: '20%',
       paddingLeft: 100,
       paddingRight: 100,

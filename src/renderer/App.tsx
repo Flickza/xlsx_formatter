@@ -1,4 +1,4 @@
-import { Alert, Grid } from '@mui/material';
+import { Alert, Grid, Typography } from '@mui/material';
 import { useState } from 'react';
 import Fileupload from './Components/Fileupload/Fileupload';
 import './App.css';
@@ -10,12 +10,18 @@ export default function App() {
   const classes = AppStyles();
   return (
     <Grid container className={classes.mainGrid}>
+      <Grid item width="100%">
+        <Alert sx={{ mb: 1, w: '100%' }} severity="info">
+          NB! - Regneark må følge den nye malen.
+        </Alert>
+      </Grid>
       <Grid className={classes.secondGrid}>
-        <Grid item>
-          <Alert sx={{ mb: 3 }} severity="info">
-            NB! - Regneark må følge den nye malen.
-          </Alert>
-        </Grid>
+        <Typography
+          variant="h3"
+          sx={{ color: 'white', mb: 5, textAlign: 'center' }}
+        >
+          XLSX FORMATTER
+        </Typography>
         <Grid item className={classes.inputs}>
           <ConfigYear changeYear={setYear} selectedYear={year} />
         </Grid>
