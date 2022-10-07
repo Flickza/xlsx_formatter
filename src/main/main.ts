@@ -18,6 +18,10 @@ import { resolveHtmlPath } from './util';
 
 class AppUpdater {
   constructor() {
+    const server =
+      'https://xlsx-formatter-updater-a12x35gja-flickza.vercel.app/';
+    const url = `${server}/update/${process.platform}/${app.getVersion()}`;
+    autoUpdater.setFeedURL(url);
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
