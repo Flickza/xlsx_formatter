@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import XLSX from 'xlsx';
 
 export type Channels = 'ipc-example';
 
@@ -30,6 +31,13 @@ contextBridge.exposeInMainWorld('dialog', {
 contextBridge.exposeInMainWorld('save', {
   save: async (_wb: unknown, _filename: string, _dir: string) => {
     const result = await ipcRenderer.invoke('save', _wb, _filename, _dir);
+    return result;
+  },
+});
+
+contextBridge.exposeInMainWorld('processer', {
+  sheet: async (_sheet: XLSX.WorkSheet, _defVal: string) => {
+    const result = await ipcRenderer.invoke('processer', _sheet, _defVal);
     return result;
   },
 });

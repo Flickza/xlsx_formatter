@@ -11,6 +11,7 @@
 import path from 'path';
 import XLSX from 'xlsx';
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
+import { Worker } from 'worker_threads';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -81,6 +82,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       sandbox: false,
+      nodeIntegrationInWorker: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
@@ -118,6 +120,29 @@ const createWindow = async () => {
     }
   );
 
+  ipcMain.handle(
+    'processer',
+    (_event, sheet: XLSX.WorkSheet, defVal: string) => {
+      // console.log(sheet, defVal);
+      return new Promise((resolve, reject) => {
+        const worker = new Worker(
+          path.join(__dirname, '../renderer/Functions/sheetProcesser.ts'),
+          {
+            execArgv: ['--require', 'ts-node/register'],
+          }
+        );
+        worker.postMessage({ sheet, defVal });
+        worker.on('message', (data) => {
+          worker.terminate();
+          resolve(data);
+        });
+        worker.on('error', (err) => {
+          worker.terminate();
+          reject(err);
+        });
+      });
+    }
+  );
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {

@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import React from 'react';
 import XLSX from 'xlsx';
-import sheetInspector from './sheet';
 
 const template: XLSX.WorkBook = require('./template.json');
 
@@ -49,13 +48,19 @@ const Fileupload = ({
         return el;
       });
     });
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (await SheetHandler).forEach(async (x: Sheet) => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const inspect = sheetInspector(x.parsed!, selectedYear);
+    (await SheetHandler).map(async (x: Sheet) => {
+      const process = await toast.promise(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        window.processer.sheet(x.parsed!, selectedYear),
+        {
+          pending: `Formatterer ${x.name}.xlsx.`,
+          success: `Formattering av ${x.name}.xlsx fullført.`,
+          error: 'Feil oppsto! Kontakt @ Adel Johan',
+        }
+      );
       const workbook: XLSX.WorkBook = template;
-      XLSX.utils.sheet_add_json(template?.Sheets?.Ark1, inspect, {
+      XLSX.utils.sheet_add_json(template?.Sheets?.Ark1, process, {
         skipHeader: false,
         origin: 'A1',
       });

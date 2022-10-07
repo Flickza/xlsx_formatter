@@ -1,4 +1,5 @@
 import { Channels } from 'main/preload';
+import XLSX from 'xlsx';
 
 declare global {
   interface Window {
@@ -16,7 +17,14 @@ declare global {
       getDir: () => Promise<string>;
     };
     save: {
-      save: (_wb: unknown, _filename: string, _dir: string) => Promise<any>;
+      save: (
+        _wb: XLSX.WorkBook,
+        _filename: string,
+        _dir: string
+      ) => Promise<any>;
+    };
+    processer: {
+      sheet: (_sheet: XLSX.WorkSheet, _defVal: string) => Promise<any>;
     };
   }
 }
