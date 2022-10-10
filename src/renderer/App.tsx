@@ -1,7 +1,7 @@
 import { Alert, Grid, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-import Fileupload from './Components/Fileupload/Fileupload';
+import FileUpload from './Components/FileUpload/FileUpload';
 import ConfigDirectory from './Components/ConfigDirectory/ConfigDirectory';
 import ConfigYear from './Components/ConfigYear/ConfigYear';
 import './App.css';
@@ -37,7 +37,7 @@ export default function App() {
           />
         </Grid>
         <Grid item>
-          <Fileupload currentDirectory={currentDirectory} selectedYear={year} />
+          <FileUpload currentDirectory={currentDirectory} selectedYear={year} />
         </Grid>
       </Grid>
     </Grid>

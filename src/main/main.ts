@@ -19,10 +19,6 @@ import { resolveHtmlPath } from './util';
 
 class AppUpdater {
   constructor() {
-    const server =
-      'https://xlsx-formatter-updater-a12x35gja-flickza.vercel.app/';
-    const url = `${server}/update/${process.platform}/${app.getVersion()}`;
-    autoUpdater.setFeedURL(url);
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
@@ -30,12 +26,6 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -89,7 +79,6 @@ const createWindow = async () => {
     },
     resizable: false,
   });
-
   ipcMain.handle('dialog:open', async () => {
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory'],
@@ -126,7 +115,10 @@ const createWindow = async () => {
       // console.log(sheet, defVal);
       return new Promise((resolve, reject) => {
         const worker = new Worker(
-          path.join(__dirname, '../renderer/Functions/sheetProcesser.ts'),
+          path.join(
+            process.resourcesPath,
+            './assets/Functions/sheetProcesser.ts'
+          ),
           {
             execArgv: ['--require', 'ts-node/register'],
           }
