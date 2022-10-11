@@ -79,7 +79,6 @@ const createWindow = async () => {
     },
     resizable: false,
   });
-  mainWindow.webContents.openDevTools();
 
   ipcMain.handle('dialog:open', async () => {
     const result = await dialog.showOpenDialog({
@@ -136,6 +135,7 @@ const createWindow = async () => {
       });
     }
   );
+
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
@@ -180,7 +180,10 @@ autoUpdater.on('update-downloaded', (event) => {
     type: 'info',
     buttons: ['Restart', 'Later'],
     title: 'Application Update',
-    message: process.platform === 'win32' ? 'test' : 'test',
+    message:
+      process.platform === 'win32'
+        ? `${event?.releaseNotes}`
+        : `${event?.releaseName}`,
     detail:
       'A new version has been downloaded. Restart the application to apply the updates.',
   };
