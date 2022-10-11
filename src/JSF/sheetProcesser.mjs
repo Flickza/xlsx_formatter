@@ -3,23 +3,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import XLSX from 'xlsx';
 import { parentPort } from 'worker_threads';
-import DateIsValid from './DateIsValid';
-import GetProperty from './GetProperty';
-import GetYear from './GetYear';
-import checkMissing from './checkMissing';
+import DateIsValid from './DateIsValid.mjs';
+import GetProperty from './GetProperty.mjs';
+import GetYear from './GetYear.mjs';
+import checkMissing from './checkMissing.mjs';
 
-const process = async (sheet: XLSX.WorkSheet, _defVal: string) => {
-  const temp: Array<any> = XLSX.utils.sheet_to_json(sheet?.Sheets?.Ark1, {
+const process = async (sheet, _defVal) => {
+  const temp = XLSX.utils.sheet_to_json(sheet?.Sheets?.Ark1, {
     defval: '',
   });
-  temp.map((row: { [index: string]: string }, index: any) => {
+  temp.map((row, index) => {
     // get personNr key from object
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    const pnrKey: string = GetProperty.PersonNr?.(row)!;
+    const pnrKey = GetProperty.PersonNr?.(row);
 
     // get Fødselsdato key from object
     // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-    const dateKey: string = GetProperty.Date?.(row)!;
+    const dateKey = GetProperty.Date?.(row);
 
     // calculate birthyear from fødselsdato + personnr
     const year = GetYear(

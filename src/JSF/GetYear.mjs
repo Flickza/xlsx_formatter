@@ -1,4 +1,4 @@
-const GetYear = (fdato?: string, pnr?: string, def?: string) => {
+const GetYear = (fdato, pnr, def) => {
   try {
     if (
       pnr === undefined ||
@@ -16,7 +16,7 @@ const GetYear = (fdato?: string, pnr?: string, def?: string) => {
     const lastTwo = fdato.slice(-2);
 
     // get current year
-    const currentYear: string = new Date().getFullYear().toString();
+    const currentYear = new Date().getFullYear().toString();
 
     let year;
     // 1900 - 1999

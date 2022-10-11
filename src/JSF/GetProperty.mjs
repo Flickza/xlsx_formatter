@@ -1,15 +1,6 @@
-interface GPInterface {
-  Date?: (a: { [index: string]: string }) => string;
-  PersonNr?: (a: { [index: string]: string }) => string;
-}
-type Key = {
-  key: string;
-};
-
-const GetProperty: GPInterface = {};
-
-GetProperty.PersonNr = (a: { [index: string]: string }) => {
-  const property: Key = {
+const GetProperty = {};
+GetProperty.PersonNr = (a) => {
+  const property = {
     key: '',
   };
   // Look through object keys and look for a key containing person|Person
@@ -22,8 +13,8 @@ GetProperty.PersonNr = (a: { [index: string]: string }) => {
   return property.key;
 };
 
-GetProperty.Date = (a: { [index: string]: string }) => {
-  const property: Key = {
+GetProperty.Date = (a) => {
+  const property = {
     key: '',
   };
   if (Object.prototype.hasOwnProperty.call(a, 'ddmmyy')) {

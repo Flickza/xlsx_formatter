@@ -79,6 +79,8 @@ const createWindow = async () => {
     },
     resizable: false,
   });
+  mainWindow.webContents.openDevTools();
+
   ipcMain.handle('dialog:open', async () => {
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory'],
@@ -89,7 +91,11 @@ const createWindow = async () => {
     // eslint-disable-next-line consistent-return
     return result.filePaths[0];
   });
-
+  ipcMain.handle('update', async () => {
+    const update = await autoUpdater.checkForUpdates();
+    console.log(update);
+    return update;
+  });
   ipcMain.handle(
     'save',
     async (_event, _wb: XLSX.WorkBook, _filename, _dir) => {
@@ -112,16 +118,11 @@ const createWindow = async () => {
   ipcMain.handle(
     'processer',
     (_event, sheet: XLSX.WorkSheet, defVal: string) => {
-      // console.log(sheet, defVal);
       return new Promise((resolve, reject) => {
         const worker = new Worker(
-          path.join(
-            process.resourcesPath,
-            './assets/Functions/sheetProcesser.ts'
-          ),
-          {
-            execArgv: ['--require', 'ts-node/register'],
-          }
+          app.isPackaged
+            ? path.join(__dirname, './processer.js')
+            : path.join(__dirname, '../JSF/sheetProcesser.mjs')
         );
         worker.postMessage({ sheet, defVal });
         worker.on('message', (data) => {
@@ -173,6 +174,29 @@ const createWindow = async () => {
  * Add event listeners...
  */
 
+autoUpdater.on('update-downloaded', (event) => {
+  console.log(event);
+  const dialogOpts = {
+    type: 'info',
+    buttons: ['Restart', 'Later'],
+    title: 'Application Update',
+    message: process.platform === 'win32' ? 'test' : 'test',
+    detail:
+      'A new version has been downloaded. Restart the application to apply the updates.',
+  };
+
+  dialog
+    .showMessageBox(dialogOpts)
+    .then((returnValue) => {
+      if (returnValue.response === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    })
+    .catch((err) => {
+      return err;
+    });
+});
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -189,6 +213,9 @@ app
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
+      setInterval(() => {
+        autoUpdater.checkForUpdates();
+      }, 60000);
     });
   })
   .catch(console.log);
